@@ -79,7 +79,7 @@ const App = () => {
     <AppContext.Provider value = {{solution, guesses, setGuesses, gameOver, setGameOver, stats, setStats}} >
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Toaster richColors expand={false} position='top-center' visibleToasts={1} closeButton={true} toastOptions={{classNames:{title: 'text-lg'}}}/>
-        <div className='max-w-screen-lg mx-auto my-1 min-h-screen flex flex-col'>
+        <div className='max-w-screen-lg mx-auto my-1 min-h-screen flex flex-col px-4'>
           <div className='flex-grow'>
             <Header />
             <FighterSearch />

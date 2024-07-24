@@ -34,7 +34,7 @@ const GuessChart = () => {
     };
 
   return (
-    <Card>
+    <Card className="w-full max-w-[100vw]">
         <CardHeader>
             <CardTitle className="text-2xl font-bold" >Guess Distribution</CardTitle>
             <CardDescription></CardDescription>

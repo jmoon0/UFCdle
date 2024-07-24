@@ -53,8 +53,8 @@ const GuessTable = () => {
   }
 
   return (
-    <Table className="mt-3">
-      <TableCaption className="text-lg">Guess {guesses.length} of 8.</TableCaption>
+    <Table className="mt-3 overflow-x-auto">
+      <TableCaption className="text text-left sm:text-center sm:text-lg">Guess {guesses.length} of 8.</TableCaption>
       <TableHeader className='text-lg border-b-2 text-[--foreground]'>
         <TableRow className="border-b-2 border-[--border] w-full relative font-bold">
           <TableHead className="w-1/5" >Name</TableHead>

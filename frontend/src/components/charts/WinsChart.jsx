@@ -30,7 +30,7 @@ const WinsChart = () => {
     };
 
   return (
-    <Card>
+    <Card className="w-full max-w-[100vw]">
         <CardHeader className="m-0 p-0">
             <CardTitle></CardTitle>
             <CardDescription></CardDescription>
