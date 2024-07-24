@@ -1,0 +1,28 @@
+import React from 'react'
+import Help from './Help'
+import Stats from './Stats'
+import Settings from './Settings';
+import "../index.css"
+
+const Header = () => {
+  return (
+    <div className='flex justify-between items-center my-4 border-b-2 border-[--foreground]'>
+        <div className='flex items-center space-x-4 pb-4 pt-2'>
+            <div className='border-r-2 border-[--foreground]'>
+                <h1 className='font-serif text-red-900 pr-3 text-4xl'>Blessdle</h1>
+            </div> 
+            <div>
+                <h2>A <a className='text-red-500 hover:text-red-300 pr-1 italic underline' href='https://www.ufc.com/' target='_blank' rel='nofollow'>UFC</a> fighter </h2>
+                <h2>guessing game.</h2>
+            </div>
+        </div>
+        <div className='flex justify-center items-center space-x-3 pr-2'>
+            <Help />
+            <Stats />
+            <Settings />
+        </div>
+    </div>
+  )
+}
+
+export default Header
