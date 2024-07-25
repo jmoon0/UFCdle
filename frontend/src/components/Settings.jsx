@@ -55,6 +55,7 @@ const Settings = () => {
             <Separator />
             <div>
               <p className='text-base text-muted-foreground'>Questions? Bugs? Ideas? <a className="underline" href="https://forms.gle/s4rGBUxU9VMh4ZzAA" target='_blank' rel='nofollow'>Contact us.</a></p>
+              <p className='text-base text-muted-foreground'>Enjoy Blessdle? <a className="underline" href="https://ko-fi.com/moonwater0" target='_blank' rel='nofollow'>Support us.</a></p>
             </div>
           </div>
         </DialogContent>
