@@ -6,7 +6,7 @@ import "../index.css"
 
 const Header = () => {
   return (
-    <div className='flex flex-col sm:flex-row justify-between items-center my-4 border-b-2 border-[--foreground]'>
+    <header className='flex flex-col sm:flex-row justify-between items-center my-4 border-b-2 border-[--foreground]'>
         <div className='flex flex-col sm:flex-row items-center space-x-4 pb-4 pt-2'>
             <div className='border-b-2 pb-2 sm:border-b-0 sm:border-r-2 sm:pb-0 border-[--foreground]'>
                 <h1 className='font-serif text-red-900 pr-3 text-4xl'>Blessdle</h1>
@@ -21,7 +21,7 @@ const Header = () => {
             <Stats />
             <Settings />
         </div>
-    </div>
+    </header>
   )
 }
 
