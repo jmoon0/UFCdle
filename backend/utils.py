@@ -12,7 +12,7 @@ def select_daily_fighter():
 
     existing_selection = DailySolution.query.filter_by(date=today).first()
     if existing_selection:
-         return existing_selection.fighter
+         return existing_selection
     
     fighters = Fighter.query.all()
 
