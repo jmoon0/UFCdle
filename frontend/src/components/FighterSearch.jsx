@@ -25,7 +25,7 @@ const FighterSearch = () => {
 
       setIsLoading(true);
       try {
-        const response = await fetch(`http://127.0.0.1:5000/api/search?q=${encodeURIComponent(searchQuery)}`);
+        const response = await fetch(`https://ufcdle.onrender.com/api/search?q=${encodeURIComponent(searchQuery)}`);
         const data = await response.json();
         setSuggestions(data);
       } catch (error) {
@@ -88,7 +88,7 @@ const FighterSearch = () => {
       selectedFighter = suggestions[selectedIndex]
     }
 
-    const url = "http://127.0.0.1:5000/api/guess"
+    const url = "https://ufcdle.onrender.com/api/guess"
     const options = {
       method: "POST",
       headers: {

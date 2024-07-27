@@ -32,7 +32,7 @@ const App = () => {
 
   const fetchSolution = async () => {
     try{
-      const response = await fetch("http://127.0.0.1:5000/api/daily-fighter")
+      const response = await fetch("https://ufcdle.onrender.com/api/daily-fighter")
       const dailyFighter = await response.json();
       localStorage.setItem("solution", JSON.stringify(dailyFighter));
       localStorage.setItem("solutionDate", getESTDate());
