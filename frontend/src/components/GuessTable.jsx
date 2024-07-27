@@ -19,7 +19,7 @@ const GuessTable = () => {
 
   const bonusStat = solution.bonusStat;
   const bonusStats = {
-    "sigStrikesAttempted	": "Strike Attempts",
+    "sigStrikesAttempted": "Strike Attempts",
     "sigStrikesDefense": "Strike Defense %",
     "sigStrikesLanded": "Strikes Landed",
     "takedownDefense": "TD Defense %",
