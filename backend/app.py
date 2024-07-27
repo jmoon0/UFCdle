@@ -1,3 +1,4 @@
+import click
 from flask import request, jsonify
 from models import Fighter, DailySolution
 from config import app, db
@@ -21,13 +22,17 @@ def update_db():
     for name in fighters:
         details = get_fighter_details(name)
         if details:
+            #Names in the database are not the same as the ones in the scraped wiki tables
             #Checks if a fighter already exists in the db
             existing_fighter = Fighter.query.filter_by(name=details['name']).first()
 
             #Update existing fighter stats
             if existing_fighter:
-                for key, value in details.items():
-                    setattr(existing_fighter, key, value)
+                existing_fighter.wins = details["wins"]
+                existing_fighter.losses = details["losses"]
+                existing_fighter.weight_class = details["weightClass"]
+                existing_fighter.age = details["age"]
+                existing_fighter.bonus_stats = details["bonusStats"]
             #Add new fighter
             else:
                 new_fighter = Fighter(
@@ -43,6 +48,27 @@ def update_db():
         
     print("Db update finished.")
     db.session.commit()
+
+@app.cli.command("update-fighter")
+@click.argument("name")
+def update_fighter(name):
+    details = get_fighter_details(name)
+    if details:
+        existing_fighter = Fighter.query.filter_by(name=details['name']).first()
+
+        if existing_fighter:
+            existing_fighter.wins = details["wins"]
+            existing_fighter.losses = details["losses"]
+            existing_fighter.weight_class = details["weightClass"]
+            existing_fighter.age = details["age"]
+            existing_fighter.bonus_stats = details["bonusStats"]
+            
+            click.echo(f"Updated stats for: {name}")
+            db.session.commit()
+        else:
+            click.echo(f"Fighter {name} not found in the database. No update was made.")
+    else:
+        click.echo(f"Details for fighter {name} could not be retrieved.")
 
 @app.cli.command("check-db")
 def check_db():
@@ -62,6 +88,15 @@ def check_db():
     for fighter in random.sample(fighters, sample_size):
         bs = fighter.bonus_stats.get(bonus_stat, "N/A") if fighter.bonus_stats else "N/A"
         print(f"Name: {fighter.name}, Wins: {fighter.wins}, Losses: {fighter.losses}, Weight Class: {fighter.weight_class} Bonus Stat ({bonus_stat}): {bs}")
+
+@app.cli.command("check-fighter")
+@click.argument("name")
+def check_db(name):
+    fighter = Fighter.query.filter_by(name=name).first()
+    if fighter:
+        click.echo(f"Fighter details: {fighter.to_json()}")
+    else:
+        click.echo(f"Fighter {name} not found.")
 
 @app.route("/api/fighters", methods=["GET"])
 def get_fighters():
