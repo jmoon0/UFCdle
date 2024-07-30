@@ -104,7 +104,7 @@ def compare_bonus_stats(guess, solution, bonus_stat):
     if guess_bonus_val:
         if bonus_stat in ["sigStrikesLanded", "sigStrikesAttempted"]:
             return compare_stat(guess_bonus_val, solution_bonus_val, 20)
-        elif bonus_stat in ["takedownsLanded", "takedownsAttempted", "sigStrikeDefense", "takedownsDefense"]:
+        elif bonus_stat in ["takedownsLanded", "takedownsAttempted", "sigStrikesDefense", "takedownDefense"]:
             return compare_stat(guess_bonus_val, solution_bonus_val, 5)
     else:
         return "X"
