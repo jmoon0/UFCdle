@@ -22,7 +22,7 @@ const Help = () => {
             <h3 className='text-lg'>Help</h3>
           </div>
         </DialogTrigger>
-        <DialogContent className='overflow-y-scroll max-h-screen'>
+        <DialogContent className='overflow-y-scroll max-h-[90vh]'>
             <DialogHeader>
               <DialogTitle className='text-2xl font-bold mb-0 pb-0'>
                 How to Play
@@ -49,7 +49,8 @@ const Help = () => {
                 </li>
               </ul>
               <p>4. New fighter and bonus stat is released everyday at midnight (EST).</p>
-              <p>5. If the guess's bonus stat is an X (not zero), that indicates that no official records of the guess's stats were found (usually the case for newly signed fighters).</p>
+              <p>5. Fighter's weight class is based on the one they competed at in their last fight.</p>
+              <p>6. If the guess's bonus stat is an X (not zero), that indicates that no official records of the guess's stats were found (usually the case for newly signed fighters).</p>
               <div className='pt-4 text-base text-muted-foreground space-y-1'>
                 <p className='text-lg'>Questions? Bugs? Ideas? <a className="underline" href="https://forms.gle/s4rGBUxU9VMh4ZzAA" target='_blank' rel='nofollow'>Contact us.</a></p>
                 <p>*Fighters from <u>women's divisions</u> are currently not supported.</p>

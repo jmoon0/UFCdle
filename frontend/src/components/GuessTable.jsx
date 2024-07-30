@@ -16,7 +16,7 @@ import { IoMdArrowRoundDown, IoMdArrowRoundUp } from "react-icons/io";
 const GuessTable = () => {
   const {solution} = useContext(AppContext);
   const {guesses} = useContext(AppContext);
-
+  console.log(guesses[0])
   const bonusStat = solution.bonusStat;
   const bonusStats = {
     "sigStrikesAttempted": "Strike Attempts",
@@ -29,7 +29,7 @@ const GuessTable = () => {
   const bonusStatLabel = bonusStats[bonusStat];
 
   const getClassName = (comparisonResult) => {
-    if(comparisonResult=="none"){
+    if(comparisonResult=="none" || comparisonResult==null){
       return;
     }
 

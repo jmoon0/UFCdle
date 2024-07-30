@@ -28,7 +28,7 @@ const Results = () => {
     <Dialog open={dialogOpen} onOpenChange={(open) => {setDialogOpen(open)}}>
         <DialogTrigger>
         </DialogTrigger>
-        <DialogContent className="overflow-y-scroll max-h-screen">
+        <DialogContent className="overflow-y-scroll max-h-[90vh]">
             <DialogHeader>
                 <DialogTitle className="text-2xl font-bold" >Results</DialogTitle>
             </DialogHeader>

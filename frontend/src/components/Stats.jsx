@@ -24,7 +24,7 @@ const Stats = () => {
             <h3 className='text-lg'>Stats</h3>
           </div>
         </DialogTrigger>
-        <DialogContent className='overflow-y-scroll max-h-screen'>
+        <DialogContent className='overflow-y-scroll max-h-[90vh]'>
           <DialogHeader>
             <DialogTitle className='text-2xl font-bold'>
                 Stats
