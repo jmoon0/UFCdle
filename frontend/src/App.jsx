@@ -40,7 +40,6 @@ const App = () => {
     } catch(error){
       toast.error(`Error fetching fighter: ${error}`)
     }
-    
   }
 
   const getESTDate = () => {
@@ -50,16 +49,16 @@ const App = () => {
 
   //Reset solution, guesses, and gameOver states if its a new day (est)
   useEffect(() => {
+    fetchSolution();
+    
     const today = getESTDate(); 
     const solutionDate = localStorage.getItem("solutionDate") || today;
 
     if (solutionDate !== today || Object.keys(solution).length == 0) {
-      fetchSolution();
       setGuesses([]);
       setGameOver({ isOver: false, isCorrect: false });
       localStorage.setItem("solutionDate", today)
     }
-
   }, []);
   
   //Save state to local storage
