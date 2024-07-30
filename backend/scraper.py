@@ -6,7 +6,6 @@ def scrape_fighter_roster():
     url = 'https://en.wikipedia.org/wiki/List_of_current_UFC_fighters'
     response = requests.get(url)
     response.raise_for_status()  
-
     tables = pd.read_html(StringIO(response.text))
 
     fighters = []
@@ -19,3 +18,12 @@ def scrape_fighter_roster():
             fighters.extend(table['Name'].to_list())
     
     return fighters
+
+def scrape_released_fighters():
+    url = 'https://en.wikipedia.org/wiki/List_of_current_UFC_fighters'
+    response = requests.get(url)
+    response.raise_for_status()  
+    tables = pd.read_html(StringIO(response.text))
+
+    released_fighters = tables[0]['Name'].to_list()
+    return released_fighters

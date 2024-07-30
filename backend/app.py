@@ -2,7 +2,7 @@ import click
 from flask import request, jsonify
 from models import Fighter, DailySolution
 from config import app, db
-from scraper import scrape_fighter_roster
+from scraper import scrape_fighter_roster, scrape_released_fighters
 from ufc_data import get_fighter_details
 from utils import get_daily_fighter, compare_fighters
 from pytz import timezone
@@ -18,6 +18,12 @@ def reset_db():
 
 @app.cli.command("update-db")
 def update_db():
+    released_fighters = scrape_released_fighters()
+    for released_name in released_fighters:
+        fighter = Fighter.query.filter_by(name=released_name).first()
+        if fighter:
+            db.session.delete(fighter)
+
     fighters = scrape_fighter_roster()
     for name in fighters:
         details = get_fighter_details(name)
@@ -146,7 +152,9 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
+    '''
     from scheduler import schedule_tasks
-    schedule_tasks(app, update_db)
+    #schedule_tasks(app, update_db)
+    '''
 
     app.run(debug=True)
