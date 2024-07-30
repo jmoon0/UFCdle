@@ -1,3 +1,4 @@
+'''
 from utils import select_daily_fighter
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -20,3 +21,4 @@ def schedule_tasks(app, update_db):
     scheduler.add_job(update_db_with_context, 'cron', day_of_week="sun", hour=10, minute=0)
 
     scheduler.start()
+'''
