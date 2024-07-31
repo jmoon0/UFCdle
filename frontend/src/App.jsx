@@ -6,14 +6,12 @@ import Footer from './components/Footer'
 import Results from './components/Results'
 import { ThemeProvider } from "@/components/theme-provider"
 import { toast, Toaster } from 'sonner'
+import FighterWeight from './components/FighterWeight';
 
 export const AppContext = createContext();
 
 const App = () => {
-  const [solution, setSolution] = useState(() => {
-    const savedSolution = JSON.parse(localStorage.getItem("solution"));
-    return savedSolution ? savedSolution : {};
-  })
+  const [solution, setSolution] = useState({});
 
   const [guesses, setGuesses] = useState(() => {
     const savedGuesses = JSON.parse(localStorage.getItem("guesses"));
@@ -30,13 +28,17 @@ const App = () => {
     return savedStats ? savedStats : {gamesPlayed: 0, wins: 0, currentStreak: 0, longestStreak: 0, guessDistribution: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0,}};
   })
 
+  const [isHardMode, setIsHardMode] = useState(() => {
+    const savedIsHardMode = localStorage.getItem("isHardMode");
+    return savedIsHardMode === "true";
+  })
+
   const fetchSolution = async () => {
     try{
       const response = await fetch("https://ufcdle.onrender.com/api/daily-fighter")
       const dailyFighter = await response.json();
-      localStorage.setItem("solution", JSON.stringify(dailyFighter));
       localStorage.setItem("solutionDate", getESTDate());
-      setSolution(dailyFighter)
+      setSolution(dailyFighter);
     } catch(error){
       toast.error(`Error fetching fighter: ${error}`)
     }
@@ -47,10 +49,10 @@ const App = () => {
     return new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' })).toDateString();
   };
 
-  //Reset solution, guesses, and gameOver states if its a new day (est)
+  //Reset guesses and gameOver states if its a new day (est)
   useEffect(() => {
     fetchSolution();
-    
+
     const today = getESTDate(); 
     const solutionDate = localStorage.getItem("solutionDate") || today;
 
@@ -74,13 +76,18 @@ const App = () => {
     localStorage.setItem("stats", JSON.stringify(stats));
   }, [stats]);
 
+  useEffect(() => {
+    localStorage.setItem("isHardMode", isHardMode);
+  }, [isHardMode]);
+
   return (
-    <AppContext.Provider value = {{solution, guesses, setGuesses, gameOver, setGameOver, stats, setStats}} >
+    <AppContext.Provider value = {{solution, guesses, setGuesses, gameOver, setGameOver, stats, setStats, isHardMode, setIsHardMode}} >
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Toaster richColors expand={false} position='top-center' visibleToasts={1} closeButton={true} toastOptions={{classNames:{title: 'text-lg'}}}/>
         <div className='max-w-screen-lg mx-auto my-1 min-h-screen flex flex-col px-4'>
           <div className='flex-grow'>
             <Header />
+            {!isHardMode && <FighterWeight />}
             <FighterSearch />
             <GuessTable />
             <Results />
