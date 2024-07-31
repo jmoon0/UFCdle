@@ -28,7 +28,7 @@ const Results = () => {
     <Dialog open={dialogOpen} onOpenChange={(open) => {setDialogOpen(open)}}>
         <DialogTrigger>
         </DialogTrigger>
-        <DialogContent className="overflow-y-scroll max-h-[90vh]">
+        <DialogContent className="overflow-y-scroll max-h-[85vh] max-w-[85%]">
             <DialogHeader>
                 <DialogTitle className="text-2xl font-bold" >Results</DialogTitle>
             </DialogHeader>
@@ -48,6 +48,10 @@ const Results = () => {
                     <p>Come back tomorrow to try again!</p>
                   </div>
                 )}
+                <div>
+                  <p className='text-sm text-muted-foreground'>Questions? Bugs? Ideas? <a className="underline hover:text-destructive" href="https://forms.gle/s4rGBUxU9VMh4ZzAA" target='_blank' rel='nofollow'>Contact us.</a></p>
+                  <p className='text-sm text-muted-foreground'>Want to support the site? <a className="underline hover:text-destructive" href="https://ko-fi.com/moonwater0" target='_blank' rel='nofollow'>Send a kofi.</a></p>
+                </div>
                 <div className='mt-2 flex flex-col space-y-3'>
                   <WinsChart />
                   <GuessChart />

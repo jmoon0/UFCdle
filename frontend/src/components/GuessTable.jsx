@@ -14,17 +14,14 @@ import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { IoMdArrowRoundDown, IoMdArrowRoundUp } from "react-icons/io";
 
 const GuessTable = () => {
-  const {solution} = useContext(AppContext);
-  const {guesses} = useContext(AppContext);
-  console.log(guesses[0])
+  const {solution, guesses} = useContext(AppContext);
   const bonusStat = solution.bonusStat;
   const bonusStats = {
-    "sigStrikesAttempted": "Strike Attempts",
-    "sigStrikesDefense": "Strike Defense %",
-    "sigStrikesLanded": "Strikes Landed",
+    "winsByKo": "KO/TKO Win %",
+    "winsBySub": "Submission Win %",
+    "sigStrikesAccuracy": "Strike Accuracy %",
+    "sigStrikesDefense": "Strikes Defense %",
     "takedownDefense": "TD Defense %",
-    "takedownsAttempted": "TD Attempts",
-    "takedownsLanded": "TDs Landed",
   };
   const bonusStatLabel = bonusStats[bonusStat];
 
@@ -92,7 +89,7 @@ const GuessTable = () => {
                 {stat["age"]} {getArrow(result["age"])}
               </TableCell>
               <TableCell className={`w-1/5 ${getClassName(result["bonus_stat"])}`}>
-                {stat["bonusStats"][bonusStat]} {getArrow(result["bonus_stat"])}
+                {stat["bonusStats"][bonusStat]}%{getArrow(result["bonus_stat"])}
               </TableCell>
             </TableRow>
           )   
