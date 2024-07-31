@@ -20,14 +20,14 @@ def select_daily_fighter():
          print("Error: fighters not found.")
          return None
     
-    bonus_stats = ["sigStrikesLanded", "sigStrikesAttempted", "takedownsLanded", "takedownsAttempted", "sigStrikesDefense", "takedownDefense"]
+    bonus_stats = ["winsByKo", "winsBySub", "sigStrikesAccuracy", "sigStrikesDefense", "takedownDefense"]
     selected_bonus_stat = random.choice(bonus_stats)
 
     selected_fighter = random.choice(fighters)
     daily_solution = DailySolution(date=today, fighter_id=selected_fighter.id, bonus_stat=selected_bonus_stat)
     db.session.add(daily_solution)
     db.session.commit()
-    print("Daily fighter updated. ")
+    print("Daily fighter updated.")
 
     return daily_solution
 
@@ -97,15 +97,11 @@ def compare_heights(guess, solution):
     return compare_stat(guess_val, solution_val, 4)
 
 def compare_bonus_stats(guess, solution, bonus_stat):
-    
     guess_bonus_val = int(guess.bonus_stats.get(bonus_stat))
     solution_bonus_val = int(solution.bonus_stats.get(bonus_stat))
 
     if guess_bonus_val:
-        if bonus_stat in ["sigStrikesLanded", "sigStrikesAttempted"]:
-            return compare_stat(guess_bonus_val, solution_bonus_val, 20)
-        elif bonus_stat in ["takedownsLanded", "takedownsAttempted", "sigStrikesDefense", "takedownDefense"]:
-            return compare_stat(guess_bonus_val, solution_bonus_val, 5)
+        return compare_stat(guess_bonus_val, solution_bonus_val, 5)
     else:
         return "X"
 

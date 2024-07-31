@@ -13,9 +13,18 @@ def to_int(value):
     except ValueError:
         return value
 
-def get_fighter_details(name):
+def to_percentage(part, whole):
+    dividend = to_int(part)
+    divisor = to_int(whole)
+
+    if dividend == 0 or divisor == 0:
+        return 0
     
-    #Sherdog won't show Garry's profile if it has Machado in it for some reason
+    percentage = dividend / divisor
+    return (to_int(percentage))
+
+def get_fighter_details(name):
+    #Sherdog won't show Ian Garry's profile if it has Machado in it for some reason
     if name.lower() == "ian machado garry":
         name = "ian garry"
 
@@ -30,10 +39,9 @@ def get_fighter_details(name):
                 "age": fighter["age"],
                 "height": fighter["height"],
                 "bonusStats": {
-                    "sigStrikesLanded": to_int(fighter["strikes"]["landed"]),
-                    "sigStrikesAttempted": to_int(fighter["strikes"]["attempted"]),
-                    "takedownsLanded": to_int(fighter["takedowns"]["landed"]),
-                    "takedownsAttempted": to_int(fighter["takedowns"]["attempted"]),
+                    "winsByKo": to_percentage(fighter["wins"]["ko/tko"], fighter["wins"]["total"]),
+                    "winsBySub": to_percentage(fighter["wins"]["submissions"], fighter["wins"]["total"]),
+                    "sigStrikesAccuracy": to_percentage(fighter["strikes"]["landed"], fighter["strikes"]["attempted"]),
                     "sigStrikesDefense": to_int(fighter["strikes"]["striking defense"]),
                     "takedownDefense": to_int(fighter["takedowns"]["takedown defense"]),
                 }
