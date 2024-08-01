@@ -50,6 +50,7 @@ const Help = () => {
               <p>Possible <span className='font-semibold text-rose-500'>Bonus Stats</span>: KO/TKO win %, submission win %, strike accuracy %, strike defense %, takedown defense %.</p>
               <div className='pt-4 text-base text-muted-foreground space-y-1'>
                 <p className='text-lg'>Questions? Bugs? Ideas? <a className="underline" href="https://forms.gle/s4rGBUxU9VMh4ZzAA" target='_blank' rel='nofollow'>Contact us.</a></p>
+                <p className='text-lg'><span className='text-red-800 font-seirf font-semibold'>Blessdle</span> is named after the BMF, Max "Blessed" Holloway.</p>
                 <p>*Fighters from <u>women's divisions</u> are currently not supported.</p>
                 <p>*Fighter stats are updated every <u>Monday</u>, so they may be inaccurate the day after an event.</p>
               </div>    
