@@ -56,7 +56,7 @@ const App = () => {
     const today = getESTDate(); 
     const solutionDate = localStorage.getItem("solutionDate") || today;
 
-    if (solutionDate !== today || Object.keys(solution).length == 0) {
+    if (solutionDate !== today || !solutionDate) {
       setGuesses([]);
       setGameOver({ isOver: false, isCorrect: false });
       localStorage.setItem("solutionDate", today)
