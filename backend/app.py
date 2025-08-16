@@ -108,52 +108,112 @@ def check_fighter(name):
 
 @app.route("/api/admin/update-db", methods=["POST"])
 def api_update_db():
-    """Replace the CLI update-db command"""
+    """Process only a few fighters at a time to avoid timeout"""
     try:
-        released_fighters = scrape_released_fighters()
-        for released_name in released_fighters:
-            fighter = Fighter.query.filter_by(name=released_name).first()
-            if fighter:
-                db.session.delete(fighter)
+        data = request.get_json() or {}
+        batch_size = data.get('batch_size', 3)  # Very small batch to avoid timeout
+        start_index = data.get('start_index', 0)
+        
+        # Handle released fighters only on first batch
+        if start_index == 0:
+            released_fighters = scrape_released_fighters()
+            for released_name in released_fighters:
+                fighter = Fighter.query.filter_by(name=released_name).first()
+                if fighter:
+                    db.session.delete(fighter)
+            db.session.commit()
+            print(f"Removed {len(released_fighters)} released fighters")
 
+        # Get scraped fighters
         fighters = scrape_fighter_roster()
-        updated_count = 0
-        added_count = 0
+        total_fighters = len(fighters)
         
-        for name in fighters:
-            details = get_fighter_details(name)
-            if details:
-                existing_fighter = Fighter.query.filter_by(name=details['name']).first()
-                
-                if existing_fighter:
-                    existing_fighter.wins = details["wins"]
-                    existing_fighter.losses = details["losses"]
-                    existing_fighter.weight_class = details["weightClass"]
-                    existing_fighter.age = details["age"]
-                    existing_fighter.bonus_stats = details["bonusStats"]
-                    updated_count += 1
+        # Process only a small batch
+        end_index = min(start_index + batch_size, total_fighters)
+        batch_fighters = fighters[start_index:end_index]
+        
+        results = {
+            "updated": 0,
+            "added": 0,
+            "skipped": 0,
+            "errors": []
+        }
+        
+        # Process each fighter in the batch
+        for i, name in enumerate(batch_fighters):
+            current_index = start_index + i
+            print(f"Processing {current_index + 1}/{total_fighters}: {name}")
+            
+            try:
+                details = get_fighter_details(name)
+                if details:
+                    existing_fighter = Fighter.query.filter_by(name=details['name']).first()
+                    
+                    if existing_fighter:
+                        existing_fighter.wins = details["wins"]
+                        existing_fighter.losses = details["losses"]
+                        existing_fighter.weight_class = details["weightClass"]
+                        existing_fighter.age = details["age"]
+                        existing_fighter.bonus_stats = details["bonusStats"]
+                        results["updated"] += 1
+                    else:
+                        new_fighter = Fighter(
+                            name=details["name"],  # type: ignore
+                            wins=details["wins"],  # type: ignore
+                            losses=details["losses"],  # type: ignore
+                            weight_class=details["weightClass"],  # type: ignore
+                            age=details["age"],  # type: ignore
+                            height=details["height"],  # type: ignore
+                            bonus_stats=details["bonusStats"],  # type: ignore
+                        )
+                        db.session.add(new_fighter)
+                        results["added"] += 1
                 else:
-                    new_fighter = Fighter(
-                        name=details["name"],  # type: ignore
-                        wins=details["wins"],  # type: ignore
-                        losses=details["losses"],  # type: ignore
-                        weight_class=details["weightClass"],  # type: ignore
-                        age=details["age"],  # type: ignore
-                        height=details["height"],  # type: ignore
-                        bonus_stats=details["bonusStats"],  # type: ignore
-                    )
-                    db.session.add(new_fighter)
-                    added_count += 1
+                    results["skipped"] += 1
+                    results["errors"].append(f"No details found for: {name}")
+                    
+            except Exception as e:
+                results["skipped"] += 1
+                results["errors"].append(f"Error with {name}: {str(e)}")
+                print(f"Error processing {name}: {str(e)}")
         
+        # Commit the batch
         db.session.commit()
+        
+        # Calculate progress
+        progress = {
+            "processed": end_index,
+            "total": total_fighters,
+            "percentage": round((end_index / total_fighters) * 100, 1),
+            "has_more": end_index < total_fighters,
+            "next_start": end_index if end_index < total_fighters else None
+        }
+        
         return jsonify({
-            "success": True, 
-            "updated": updated_count, 
-            "added": added_count
+            "success": True,
+            "progress": progress,
+            "results": results,
+            "message": f"Processed fighters {start_index + 1}-{end_index} of {total_fighters}"
         })
         
     except Exception as e:
         db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/admin/db-progress", methods=["GET"])
+def api_db_progress():
+    """Check current database progress"""
+    try:
+        scraped_fighters = scrape_fighter_roster()
+        db_fighters = Fighter.query.count()
+        
+        return jsonify({
+            "database_count": db_fighters,
+            "scraped_count": len(scraped_fighters),
+            "completion_percentage": round((db_fighters / len(scraped_fighters)) * 100, 1) if scraped_fighters else 0
+        })
+        
+    except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 @app.route("/api/admin/init-db", methods=["POST"])
