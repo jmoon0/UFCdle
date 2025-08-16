@@ -1,3 +1,4 @@
+import traceback
 import click
 from flask import request, jsonify
 from models import Fighter, DailySolution
@@ -306,6 +307,47 @@ def guess():
     comparison = compare_fighters(fighter, daily_fighter, bonus_stat)
 
     return jsonify(comparison), 200
+
+@app.route("/api/debug/single-fighter-detailed", methods=["POST"])
+def debug_single_fighter_detailed():
+    """Detailed debugging for a single fighter"""
+    try:
+        data = request.get_json() or {}
+        fighter_name = data.get('name', 'Ilia Topuria')
+        
+        print(f"=== DEBUG: Testing fighter {fighter_name} ===")
+        
+        print("Testing fighter details...")
+        details = get_fighter_details(fighter_name)
+        
+        if details:
+            print(f"✅ Got details for {fighter_name}")
+            print(f"Details: {details}")
+            
+            return jsonify({
+                "success": True,
+                "fighter_name": fighter_name,
+                "got_details": True,
+                "details": details
+            })
+        else:
+            print(f"❌ Could not get details for {fighter_name}")
+            return jsonify({
+                "success": False,
+                "fighter_name": fighter_name,
+                "got_details": False,
+                "error": "Could not get fighter details"
+            })
+        
+    except Exception as e:
+        print(f"Exception in debug route: {str(e)}")
+        traceback.print_exc()
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "traceback": traceback.format_exc()
+        }), 500
+    
 
 '''
 if __name__ == "__main__":
