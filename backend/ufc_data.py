@@ -1,3 +1,4 @@
+import traceback
 from ufc import get_fighter
 import time
 import random
@@ -68,4 +69,5 @@ def get_fighter_details(name, max_retries=3):
                     continue
     
     print(f"Failed to get details for {name} after {max_retries} attempts")
+    traceback.print_exc()
     return None

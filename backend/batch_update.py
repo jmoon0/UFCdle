@@ -83,7 +83,6 @@ def run_batch_update(base_url, batch_size=3):
             break
 
 if __name__ == "__main__":
-    # Replace with your actual Vercel URL
     BASE_URL = "https://ufcdle.vercel.app"
     
     print("Starting batch update process...")
