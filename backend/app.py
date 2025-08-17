@@ -302,7 +302,7 @@ def guess():
         return jsonify({'error': 'No daily fighter selected.'}), 404
     
     daily_fighter = daily_solution.fighter
-    bonus_stat = daily_fighter.bonus_stat
+    bonus_stat = daily_solution.bonus_stat
 
     comparison = compare_fighters(fighter, daily_fighter, bonus_stat)
 

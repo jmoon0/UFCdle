@@ -2,7 +2,6 @@ name: Daily UFC Fighter Update
 
 on:
   schedule:
-    # Runs at every day
     - cron: "0 5 * * *"
   workflow_dispatch:
 
