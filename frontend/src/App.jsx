@@ -35,7 +35,7 @@ const App = () => {
 
   const fetchSolution = async () => {
     try{
-      const response = await fetch("https://ufcdle.onrender.com/api/daily-fighter")
+      const response = await fetch("https://ufcdle.vercel.app/api/daily-fighter")
       const dailyFighter = await response.json();
       localStorage.setItem("solutionDate", getESTDate());
       setSolution(dailyFighter);

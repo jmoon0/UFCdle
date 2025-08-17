@@ -2,7 +2,7 @@ name: Daily UFC Fighter Update
 
 on:
   schedule:
-    # Runs at 5:00 AM UTC (12:00 AM EST)
+    # Runs at every day
     - cron: "0 5 * * *"
   workflow_dispatch:
 
@@ -22,26 +22,6 @@ jobs:
             echo "$response" | grep -o '"bonus_stat":"[^"]*"' | cut -d'"' -f4 | xargs -I {} echo "Bonus stat: {}"
           else
             echo "❌ Failed to select daily fighter"
-            echo "$response"
-            exit 1
-          fi
-
-  # Weekly database update (runs Sundays at 10 AM UTC)
-  update-database:
-    runs-on: ubuntu-latest
-    if: github.event.schedule == '0 10 * * 0' || github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Update Fighter Database
-        run: |
-          response=$(curl -s -X POST https://ufcdle.app/api/admin/update-db)
-          echo "Response: $response"
-
-          if echo "$response" | grep -q '"success":true'; then
-            echo "✅ Database updated successfully"
-            echo "$response" | grep -o '"updated":[0-9]*' | cut -d':' -f2 | xargs -I {} echo "Updated fighters: {}"
-            echo "$response" | grep -o '"added":[0-9]*' | cut -d':' -f2 | xargs -I {} echo "Added fighters: {}"
-          else
-            echo "❌ Failed to update database"
             echo "$response"
             exit 1
           fi
