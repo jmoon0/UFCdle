@@ -71,3 +71,5 @@ def get_fighter_details(name, max_retries=3):
     print(f"Failed to get details for {name} after {max_retries} attempts")
     traceback.print_exc()
     return None
+
+get_fighter_details("Derrick Lewis")

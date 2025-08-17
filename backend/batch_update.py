@@ -5,8 +5,7 @@ import json
 
 def run_batch_update(base_url, batch_size=3):
     """Run the complete batch update process"""
-    
-    # Check initial progress
+
     progress_response = requests.get(f"{base_url}/api/admin/db-progress")
     if progress_response.status_code == 200:
         progress = progress_response.json()
@@ -19,8 +18,7 @@ def run_batch_update(base_url, batch_size=3):
     
     while True:
         print(f"\n--- Processing batch starting at index {start_index} ---")
-        
-        # Send batch request
+
         payload = {
             "batch_size": batch_size,
             "start_index": start_index
@@ -86,4 +84,4 @@ if __name__ == "__main__":
     BASE_URL = "https://ufcdle.vercel.app"
     
     print("Starting batch update process...")
-    run_batch_update(BASE_URL, batch_size=3)
+    run_batch_update(BASE_URL, batch_size=4)
